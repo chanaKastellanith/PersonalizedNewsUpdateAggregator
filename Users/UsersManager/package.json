@@ -1,0 +1,14 @@
+{
+  "name": "usersmanager",
+  "version": "1.0.0",
+  "description": "the user manager",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "chana kastelanitz",
+  "license": "ISC",
+  "dependencies": {
+    "@dapr/dapr": "^3.4.1"
+  }
+}

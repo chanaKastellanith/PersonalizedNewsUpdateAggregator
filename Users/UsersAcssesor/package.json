@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@dapr/dapr": "^3.4.1",
+    "sqlite3": "^5.1.7"
+  },
+  "name": "usersacssesor",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "chana kastelanitz",
+  "license": "ISC",
+  "description": ""
+}
