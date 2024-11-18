@@ -1,0 +1,20 @@
+{
+  "name": "usersengine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dapr/dapr": "^3.4.1",
+    "dapr-client": "^3.4.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "validator": "^13.12.0"
+  }
+}

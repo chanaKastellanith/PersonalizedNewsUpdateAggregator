@@ -1,0 +1,12 @@
+{
+  "name": "personalizednewsupdateaggregator",
+  "version": "1.0.0",
+  "description": "The project aims to develop a microservice-based application that aggregates news and technology updates based on user preferences",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [],
+  "author": "chana kastelanitz",
+  "license": "ISC"
+}
