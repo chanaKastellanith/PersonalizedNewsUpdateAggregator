@@ -13,7 +13,7 @@ app.post('/v1.0/invoke/usersEngine/method/authenticateUser', async (req, res) =>
         // שליחת בקשה ל-DAPR לקבלת המשתמש לפי אימייל
         const user = await daprClient.invoker.invoke(serviceName, 'authenticateUser', HttpMethod.POST, { email ,password});
         // אם יש, מחזירים את המידע על המשתמש
-        return res.json({ response });
+        return res.json({ user });
     } catch (err) {
         res.status(500).json({ message: 'Error authenticating user', error: err.message });
     }
@@ -27,6 +27,8 @@ app.post('/v1.0/invoke/usersEngine/method/createUser', async (req, res) => {
        const response= await daprClient.invoker.invoke(serviceName, 'createUser', HttpMethod.POST, { userId, name, email, password });
         return res.status(201).json({ response });
     } catch (err) {
+        console.log(err.message);
+        
         res.status(500).json({ message: 'Error creating user', error: err.message });
     }
 });
@@ -43,5 +45,5 @@ app.put('/v1.0/invoke/usersEngine/method/updateUser', async (req, res) => {
     }
 });
 app.listen(3003, () => {
-    console.log('USERMANAGER service is running on port 3002');
+    console.log('USERMANAGER service is running on port 3003');
 });

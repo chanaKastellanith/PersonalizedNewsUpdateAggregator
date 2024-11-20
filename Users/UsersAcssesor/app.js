@@ -46,8 +46,6 @@ app.post('/updateUser', async (req, res) => {
                 console.log({response});
                 return res.status(500).json({ message: 'Error updating user', error: err.message });
             }});
-         
-            
         res.json({ message: `User ${userId} updated successfully` });
     } catch (err) {
         res.status(500).json({ message: 'Error updating user', error: err.message });

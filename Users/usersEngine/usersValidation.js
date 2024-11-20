@@ -1,7 +1,7 @@
 
 const { DaprClient, HttpMethod } = require('@dapr/dapr'); // הייבוא של Dapr SDK
 const daprClient = new DaprClient(); // יצירת אובייקט של DaprClient
-const serviceName = 'usersAcssesor';
+const serviceName = 'usersAccessor';
 // פונקציה לאימות שם משתמש
 const validateName = (name) => {
     if (!name || name.length < 3) {

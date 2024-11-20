@@ -2,11 +2,10 @@ const express = require('express');
 const { generateToken, verifyToken, getToken } = require('./tokenGenerator');
 const { validateNewUser, validateUserExists } = require('./usersValidation')
 const { DaprClient, HttpMethod } = require('@dapr/dapr'); // הייבוא של Dapr SDK
-const { verify } = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
 const daprClient = new DaprClient('127.0.0.1', 3500);
-const serviceName = 'usersAcssesor';
+const serviceName = 'usersAccessor';
 app.post('/authenticateUser', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -62,7 +61,7 @@ app.post('/createUser', async (req, res) => {
         }
     }
     else {
-        return res.status(400).json({ validate, newUser });
+        return res.status(400).json({message:{validate, newUser}} );
     }
 });
 // ניתוב לעדכון משתמש
