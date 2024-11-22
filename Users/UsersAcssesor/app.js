@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
-const { getUser, addUser, updateUser, deleteUser, getAllUsersAsync } = require('./userDB'); // הייבוא מ-usersDB
+const { getUser, addUser, updateUser} = require('./userDB'); // הייבוא מ-usersDB
 app.use(express.json());
 // ניתוב לקבלת משתמש לפי מזהה
 app.post('/getUser', async (req, res) => {
-    const { userId, email } = req.body;
+    const { email, password } = req.body;
+    console.log({email,password});
     try {
-        getUser(userId, email, (user) => {
+        getUser(email, password, (user) => {
             if (user) {
                 return res.status(201).json(user);
             } else {
@@ -20,9 +21,9 @@ app.post('/getUser', async (req, res) => {
 
 // ניתוב להוספת משתמש חדש
 app.post('/addUser', async (req, res) => {
-    const { userId, name, email, password } = req.body;
-    console.log({ userId, name, email, password });
-    await addUser(userId, name, email, password, (err) => {
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
+    console.log({ userId, name, email, password, keywords, language, country,category });
+    await addUser(userId, name, email, password, keywords, language, country,category, (err) => {
         if (err) {
             return res.status(500).json({ message: 'Error adding user', error: err.message });
         }
@@ -33,19 +34,20 @@ app.post('/addUser', async (req, res) => {
 // ניתוב לעדכון פרטי משתמש
 app.post('/updateUser', async (req, res) => {
     console.log('/updateUser');
-    const { userId, name, email, password } = req.body;
-    console.log({ userId, name, email, password });
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
+    console.log({ userId, name, email, password, keywords, language, country,category });
     try {
-        getUser(userId, email, (user) => {
+        getUser(email, password, (user) => {
             if (!user)
                 return res.status(404).json({ message: 'User not found' });
         });
-        updateUser(userId, name, email, password, (err, response) => {
+        updateUser(userId, name, email, password, keywords, language, country,category, (err, response) => {
             if (err) {
                 console.error('Error updating user:', err.message);
-                console.log({response});
+                console.log({ response });
                 return res.status(500).json({ message: 'Error updating user', error: err.message });
-            }});
+            }
+        });
         res.json({ message: `User ${userId} updated successfully` });
     } catch (err) {
         res.status(500).json({ message: 'Error updating user', error: err.message });

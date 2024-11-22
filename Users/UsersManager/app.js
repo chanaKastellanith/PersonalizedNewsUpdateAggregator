@@ -9,6 +9,8 @@ const serviceName = 'usersEngine'; // שם השירות שאליו נשלחו ה
 // ניתוב לאימות משתמש
 app.post('/v1.0/invoke/usersEngine/method/authenticateUser', async (req, res) => {
     const { email, password } = req.body;
+    console.log({email,password});
+    
     try {
         // שליחת בקשה ל-DAPR לקבלת המשתמש לפי אימייל
         const user = await daprClient.invoker.invoke(serviceName, 'authenticateUser', HttpMethod.POST, { email ,password});
@@ -18,13 +20,25 @@ app.post('/v1.0/invoke/usersEngine/method/authenticateUser', async (req, res) =>
         res.status(500).json({ message: 'Error authenticating user', error: err.message });
     }
 });
-
+app.post('/v1.0/invoke/usersEngine/method/getUser', async (req, res) => {
+    const { email, password } = req.body;
+    console.log({email,password});
+    
+    try {
+        // שליחת בקשה ל-DAPR לקבלת המשתמש לפי אימייל
+        const user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email ,password});
+        // אם יש, מחזירים את המידע על המשתמש
+        return res.json({ user });
+    } catch (err) {
+        res.status(500).json({ message: 'Error authenticating user', error: err.message });
+    }
+});
 // ניתוב ליצירת משתמש חדש
 app.post('/v1.0/invoke/usersEngine/method/createUser', async (req, res) => {
-    const { userId, name, email, password } = req.body;
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
     try {
         // שליחת בקשה ל-DAPR להוסיף את המשתמש החדש
-       const response= await daprClient.invoker.invoke(serviceName, 'createUser', HttpMethod.POST, { userId, name, email, password });
+       const response= await daprClient.invoker.invoke(serviceName, 'createUser', HttpMethod.POST, { userId,name, email, password, keywords, language, country,category });
         return res.status(201).json({ response });
     } catch (err) {
         console.log(err.message);
@@ -35,10 +49,13 @@ app.post('/v1.0/invoke/usersEngine/method/createUser', async (req, res) => {
 
 // ניתוב לעדכון פרטי משתמש
 app.put('/v1.0/invoke/usersEngine/method/updateUser', async (req, res) => {
-    const { userId, name, email, password } = req.body;
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
+    console.log(userId, name, email, password, keywords, language, country,category);
+    
     try {
+        
         // שליחת בקשה ל-DAPR לעדכון פרטי המשתמש
-       const response= await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, { userId, name, email, password });
+       const response= await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, { userId,name, email, password, keywords, language, country,category});
         return res.json({ response });
     } catch (err) {
         res.status(500).json({ message: 'Error updating user', error: err.message });

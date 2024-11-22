@@ -8,8 +8,10 @@ const daprClient = new DaprClient('127.0.0.1', 3500);
 const serviceName = 'usersAccessor';
 app.post('/authenticateUser', async (req, res) => {
     const { email, password } = req.body;
+    console.log({email,password});
+    
     try {
-        const user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email });
+        const user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email ,password});
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -42,16 +44,34 @@ app.post('/authenticateUser', async (req, res) => {
         res.status(500).json({ message: 'Error authenticating user', error: err.message });
     }
 });
+app.post('/getUser', async (req, res) => {
+    const {  email, password} = req.body;
+    console.log({ email,password });
+    const newUser = await validateUserExists(email,password);
+    console.log({ newUser });
+    if ( newUser) {
+        try {
+            // שליחת בקשה ל-usersAccessor להוספת המשתמש
+            const user=await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, {  email, password});
+            return res.status(201).json({ user });
+        } catch (err) {
+            res.status(500).json({ message: 'Error get user', error: err.message });
+        }
+    }
+    else {
+        return res.status(400).json({message:{ newUser}} );
+    }
+});
 app.post('/createUser', async (req, res) => {
-    const { userId, name, email, password } = req.body;
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
     console.log({ userId });
-    const newUser = await validateUserExists(userId);
-    const validate = await validateNewUser(userId, name, email, password);
+    const newUser = await validateUserExists(email,password);
+    const validate = await validateNewUser( name, email, password);
     console.log({ newUser });
     if (validate === true && newUser === true) {
         try {
             // שליחת בקשה ל-usersAccessor להוספת המשתמש
-            await daprClient.invoker.invoke(serviceName, 'addUser', HttpMethod.POST, { userId, name, email, password });
+            await daprClient.invoker.invoke(serviceName, 'addUser', HttpMethod.POST, { userId, name, email, password, keywords, language, country,category});
             const token = generateToken(userId);
             console.log({token});
             
@@ -66,15 +86,15 @@ app.post('/createUser', async (req, res) => {
 });
 // ניתוב לעדכון משתמש
 app.put('/updateUser', async (req, res) => {
-    const { userId, name, email, password } = req.body;
-    console.log({ userId, name, email, password });
+    const { userId, name, email, password, keywords, language, country,category } = req.body;
+    console.log({ userId, name, email, password, keywords, language, country,category});
     try {
-        const validate = await validateNewUser(userId, name, email, password)
+        const validate = await validateNewUser(name, email, password)
         console.log({validate});
         
         if (validate === true) {
             // שליחת בקשה ל-usersAccessor לבדוק אם המשתמש קיים
-            await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.POST, { userId, name, email, password });
+            await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.POST, { userId, name, email, password, keywords, language, country,category });
             return res.json({ message: `User ${userId} updated successfully` });
         }
         else {

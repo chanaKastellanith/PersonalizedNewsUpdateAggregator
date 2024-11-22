@@ -28,12 +28,12 @@ const validateEmail = (email) => {
 };
 
 // פונקציה לאימות אם המשתמש קיים
-const validateUserExists = async (userId) => {
+const validateUserExists = async (email,password) => {
     try {
-        const response = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { userId });
+        const response = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email,password });
         if (response) {
             console.log({response});
-            return `המשתמש עם מזהה ${userId} כבר קיים`;
+            return `המשתמש עם מזהה ${email} כבר קיים`;
         }
         return true;
     } catch (error) {
@@ -43,7 +43,7 @@ const validateUserExists = async (userId) => {
 };
 
 // פונקציה לאימות פרטי משתמש בעת יצירת משתמש חדש
-const validateNewUser = async (userId, name, email, password) => {
+const validateNewUser = async ( name, email, password) => {
     let error = validateName(name);
     if (error) return error;
 

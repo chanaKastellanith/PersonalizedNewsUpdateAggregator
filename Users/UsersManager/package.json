@@ -112,6 +112,7 @@
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
+    "app":"dapr run --app-id usersManager --app-port 3003 --dapr-http-port 3502 node app.js",
     "test": "run test"
   },
   "keywords": [],
