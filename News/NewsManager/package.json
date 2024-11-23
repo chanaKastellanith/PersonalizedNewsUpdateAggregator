@@ -1,0 +1,17 @@
+{
+  "name": "newsmanager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app": "dapr run --app-id newsManager --app-port 3022 --dapr-http-port 3522  node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "chana kastellanitz",
+  "license": "ISC",
+  "dependencies": {
+    "@dapr/dapr": "^3.4.1",
+    "amqplib": "^0.10.4",
+    "express": "^4.21.1"
+  }
+}
