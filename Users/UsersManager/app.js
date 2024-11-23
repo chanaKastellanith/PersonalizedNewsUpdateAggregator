@@ -23,7 +23,6 @@ app.post('/v1.0/invoke/usersEngine/method/authenticateUser', async (req, res) =>
 app.post('/v1.0/invoke/usersEngine/method/getUser', async (req, res) => {
     const { email, password } = req.body;
     console.log({email,password});
-    
     try {
         // שליחת בקשה ל-DAPR לקבלת המשתמש לפי אימייל
         const user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email ,password});
@@ -51,9 +50,7 @@ app.post('/v1.0/invoke/usersEngine/method/createUser', async (req, res) => {
 app.put('/v1.0/invoke/usersEngine/method/updateUser', async (req, res) => {
     const { userId, name, email, password, keywords, language, country,category } = req.body;
     console.log(userId, name, email, password, keywords, language, country,category);
-    
     try {
-        
         // שליחת בקשה ל-DAPR לעדכון פרטי המשתמש
        const response= await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, { userId,name, email, password, keywords, language, country,category});
         return res.json({ response });
