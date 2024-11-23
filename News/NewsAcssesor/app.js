@@ -18,14 +18,24 @@ async function listenToQueue() {
     console.log(`Accessor is waiting for messages in ${ACCESSOR_QUEUE}. To exit press CTRL+C`);
 
     channel.consume(ACCESSOR_QUEUE, async (msg) => {
-        const { category, keywords, country } = JSON.parse(msg.content.toString());
+        const {name,email, category, keywords, country } = JSON.parse(msg.content.toString());
         console.log('Received request from Manager:', { category, keywords, country });
 
         try {
             // קריאה ל-API כדי לקבל חדשות
             const news = await getNews(category, keywords, country);
             console.log('News fetched:', news);
-
+            const userNews = {
+                ...news, // תוכן החדשות
+                user: {
+                  name: userName, // השם של המשתמש
+                  email: userEmail, // האימייל של המשתמש
+                },
+              };
+              
+              channel.sendToQueue(ENGINE_QUEUE, Buffer.from(JSON.stringify(userNews)), {
+                persistent: true,
+              });
             // שליחה ל-ENGINE עם התשובה
             channel.sendToQueue(ENGINE_QUEUE, Buffer.from(JSON.stringify(news)), {
                 persistent: true // שמירת התשובה

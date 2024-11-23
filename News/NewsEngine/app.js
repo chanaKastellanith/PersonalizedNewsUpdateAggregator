@@ -18,7 +18,8 @@ async function listenToQueue() {
         const response = JSON.parse(msg.content.toString());
         console.log('Received response from Accessor:', response);
 
-        // כאן אפשר לבצע עיבוד נוסף על התשובה אם נדרש
+
+       
         const processedResponse = `Processed: ${JSON.stringify(response)}`;
 
         console.log('Final processed response:', processedResponse);

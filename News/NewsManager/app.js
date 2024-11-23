@@ -21,12 +21,12 @@ function sendToQueue(message) {
                     return;
                 }
                 channel.assertQueue(ACCESSOR_QUEUE, {
-                    durable: true  // אם אתה רוצה שהתור ישרוד את אתחול ה-RabbitMQ
+                    durable: true  
                 });
 
                 // פרסום הודעה לתור
                 channel.sendToQueue(ACCESSOR_QUEUE, Buffer.from(JSON.stringify(message)), {
-                    persistent: true // אם ברצונך שההודעות ישרדו את אתחול ה-RabbitMQ
+                    persistent: true 
                 });
 
                 console.log(' [x] Sent message to ACCESSOR queue:', message);
@@ -38,9 +38,9 @@ function sendToQueue(message) {
 
 // Endpoint לקבלת בקשה
 app.post('/newsrequest', async (req, res) => {
-    const { category, keywords, country, channel } = req.body;
+    const {name,email, category, keywords, country, channel } = req.body;
     try {
-        const message = { category, keywords, country, channel };
+        const message = {name,email, category, keywords, country, channel };
         await sendToQueue(message);  // שליחה ל-RabbitMQ
         res.status(200).send({ message: 'News request added to queue successfully' });
     } catch (error) {
