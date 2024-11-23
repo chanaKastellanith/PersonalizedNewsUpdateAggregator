@@ -1,0 +1,125 @@
+# services:
+#   # usersEngine Service
+#   usersEngine:
+#     image: users_engine_image
+#     container_name: users_engine_container
+#     networks:
+#       - network-dapr
+#     ports:
+#       - "3002:3002"
+#     environment:
+#       - DAPR_APP_ID=usersEngine
+#       - DAPR_APP_PORT=3501
+#     volumes:
+#       - ./dapr/:/dapr
+#     command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3501", "-dapr-http-port", "3500"]
+  
+#   # usersAccessor Service
+#   usersAccessor:
+#     image: users_accessor_image
+#     container_name: users_accessor_container
+#     networks:
+#       - network-dapr
+#     ports:
+#       - "3001:3001"
+#     environment:
+#       - DAPR_APP_ID=usersAccessor
+#       - DAPR_APP_PORT=3500
+#     volumes:
+#       - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersAcssesor\\users.db:/app/users.db"
+#     command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
+
+#   # usersManager Service
+#   usersManager:
+#     image: users_manager_image
+#     container_name: users_manager_container
+#     networks:
+#       - network-dapr
+#     ports:
+#       - "3003:3003"
+#     environment:
+#       - DAPR_APP_ID=usersManager
+#       - DAPR_APP_PORT=3502
+#     volumes:
+#       - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersManager\\users.db:/app/users.db"  # הוספתי את ה-SQLite3 פה
+#     command: ["./daprd", "-app-id", "usersManager", "-app-port", "3502", "-dapr-http-port", "3503"]
+
+# networks:
+#   network-dapr:
+#     driver: bridge
+services:
+  # usersEngine Service
+  usersEngine:
+    build:
+      context: ./Users/usersEngine
+    image: usersengine
+    container_name: users_engine_container
+    networks:
+      - network-dapr
+    ports:
+      - "3002:3002"
+    environment:
+      - DAPR_APP_ID=usersengine
+      - DAPR_APP_PORT=3501
+    volumes:
+      - C:/Users/user/.dapr/bin:/usr/local/bin  # העתקת דפר לקונטיינר
+    command: ["./daprd.exe", "-app-id", "usersengine", "-app-port", "3501", "-dapr-http-port", "3500"]
+
+
+  # usersAccessor Service
+  usersAccessor:
+    image: users_accessor_image  # השתמש בתמונה שכבר יצרת
+    container_name: users_accessor_container
+    networks:
+      - network-dapr
+    ports:
+      - "3001:3001"
+    environment:
+      - DAPR_APP_ID=usersaccessor
+      - DAPR_HTTP_PORT=3501
+    volumes:
+      - C:/Users/user/.dapr/bin:/usr/local/bin
+      # - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersAcssesor\\users.db:/app/users.db"
+    command: ["./daprd.exe", "-app-id", "usersaccessor", "-app-port", "3001", "-dapr-http-port", "3501"]
+
+  # usersManager Service
+  usersManager:
+    build:
+      context: ./Users/UsersManager
+    image: usersmanager
+    container_name: users_manager_container
+    networks:
+      - network-dapr
+    ports:
+      - "3003:3003"
+    environment:
+      - DAPR_APP_ID=usersmanager
+      - DAPR_APP_PORT=3502
+    volumes:
+      - C:/Users/user/.dapr/bin:/usr/local/bin  # העתקת דפר לקונטיינר
+    command: ["./daprd.exe", "-app-id", "usersmanager", "-app-port", "3502", "-dapr-http-port", "3503"]
+
+
+  usersEngine-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3501", "-dapr-http-port", "3500"]
+    network_mode: "service:usersEngine"
+    volumes:
+      - ./dapr/:/dapr
+
+  usersAccessor-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
+    network_mode: "service:usersAccessor"
+    volumes:
+      - ./dapr/:/dapr
+
+  usersManager-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd", "-app-id", "usersManager", "-app-port", "3502", "-dapr-http-port", "3503"]
+    network_mode: "service:usersManager"
+    volumes:
+      - ./dapr/:/dapr
+networks:
+  network-dapr:
+    driver: bridge
