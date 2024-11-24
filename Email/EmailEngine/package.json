@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "app": "node app.js",
+    "app": "dapr run --app-id emialEngine --app-port 3031 --dapr-http-port 3531  node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

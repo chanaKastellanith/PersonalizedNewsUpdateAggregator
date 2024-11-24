@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "app": "node app.js",
+    "app": "dapr run --app-id emialAcssesor --app-port 3032 --dapr-http-port 3532  node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

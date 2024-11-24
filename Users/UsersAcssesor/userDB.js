@@ -1,12 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
 // פתיחת מאגר הנתונים (ייווצר קובץ אם אין כזה)
-const db = new sqlite3.Database('./users.db', (err) => {
+const db = new sqlite3.Database('../../db/initial-db.sqlite', (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
     } else {
         console.log('Connected to the SQLite database.');
     }
 });
+
 // db.run("DROP TABLE IF EXISTS users", (err) => {
 //     if (err) {
 //         console.error('Error dropping table:', err.message);

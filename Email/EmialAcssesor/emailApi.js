@@ -1,5 +1,4 @@
 const Mailjet = require('node-mailjet');
-
 // התחברות ל-API של Mailjet עם המפתחות שלך
 const mailjet = Mailjet.apiConnect(
   '8e065c70d0fcaf55b13e8ced06669f38',
@@ -46,6 +45,5 @@ const sendEmailWithNews = (toEmail, toName, newsItems) => {
       return err.message;
     });
 };
-
 
 module.exports={sendEmailWithNews}

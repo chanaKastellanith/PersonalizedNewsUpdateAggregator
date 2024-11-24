@@ -55,6 +55,6 @@ app.post('/updateUser', async (req, res) => {
 });
 
 // ניתוב למחיקת משתמש
-app.listen(3001, () => {
+app.listen(3001,`0.0.0.0`, () => {
     console.log('usersAcssesor service is running on port 3001');
 });

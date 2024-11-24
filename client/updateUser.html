@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עדכון משתמש</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>עדכון פרטי משתמש</h1>
+        <form id="updateForm">
+            <div class="form-group">
+                <label for="userId">User ID <span class="required">*</span></label>
+                <input type="text" id="userId" name="userId" required>
+            </div>
+            <div class="form-group">
+                <label for="name">שם <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">אימייל <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">סיסמה <span class="required">*</span></label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="keywords">מילות מפתח</label>
+                <input type="text" id="keywords" name="keywords">
+            </div>
+            <div class="form-group">
+                <label for="language">שפה</label>
+                <input type="text" id="language" name="language">
+            </div>
+            <div class="form-group">
+                <label for="country">מדינה</label>
+                <input type="text" id="country" name="country">
+            </div>
+            <div class="form-group">
+                <label for="category">קטגוריה</label>
+                <input type="text" id="category" name="category">
+            </div>
+            <button type="submit">עדכן</button>
+        </form>
+
+        <div class="response" id="responseMessage" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById("updateForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById("userId").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const keywords = document.getElementById("keywords").value;
+            const language = document.getElementById("language").value;
+            const country = document.getElementById("country").value;
+            const category = document.getElementById("category").value;
+
+            if (!userId || !name || !email || !password) {
+                alert("יש למלא את כל השדות המסומנים בכוכבית");
+                return;
+            }
+
+            const data = {
+                userId,
+                name,
+                email,
+                password,
+                keywords,
+                language,
+                country,
+                category
+            };
+
+            fetch("http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/updateUser", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseMessage = document.getElementById("responseMessage");
+                    responseMessage.style.display = "block";
+                    responseMessage.innerHTML = `<p> ${JSON.stringify(data.message)}</p>`;
+                    responseMessage.classList.add("success");
+                // } else {
+                //     responseMessage.textContent = "העדכון נכשל. אנא נסה שנית.";
+                //     responseMessage.classList.add("error");
+                // }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>

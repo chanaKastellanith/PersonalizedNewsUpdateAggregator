@@ -28,18 +28,14 @@ async function listenToQueue() {
             const userNews = {
                 ...news, // תוכן החדשות
                 user: {
-                  name: userName, // השם של המשתמש
-                  email: userEmail, // האימייל של המשתמש
+                  name: name, // השם של המשתמש
+                  email: email, // האימייל של המשתמש
                 },
               };
               
               channel.sendToQueue(ENGINE_QUEUE, Buffer.from(JSON.stringify(userNews)), {
                 persistent: true,
               });
-            // שליחה ל-ENGINE עם התשובה
-            channel.sendToQueue(ENGINE_QUEUE, Buffer.from(JSON.stringify(news)), {
-                persistent: true // שמירת התשובה
-            });
             console.log('Response sent to ENGINE queue');
 
         } catch (err) {
@@ -47,7 +43,6 @@ async function listenToQueue() {
         }
     }, { noAck: true });
 }
-
 // התחלת האזנה
 listenToQueue();
 

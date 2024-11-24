@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שלח בקשה ליצירת משתמש</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>יצירת משתמש חדש</h1>
+        
+        <!-- טופס עם תיבות קלט לשם, מייל, סיסמה ושדות נוספים -->
+        <form id="createUserForm">
+            <div class="form-group">
+                <label for="name">שם <span class="required">*</span>:</label>
+                <input type="text" id="name" name="name" placeholder="הכנס שם" required>
+            </div>
+            <div class="form-group">
+                <label for="email">מייל <span class="required">*</span>:</label>
+                <input type="email" id="email" name="email" placeholder="הכנס מייל" required>
+            </div>
+            <div class="form-group">
+                <label for="password">סיסמה <span class="required">*</span>:</label>
+                <input type="password" id="password" name="password" placeholder="הכנס סיסמה" required>
+            </div>
+            <div class="form-group">
+                <label for="keywords">מילות מפתח:</label>
+                <input type="text" id="keywords" name="keywords" placeholder="הכנס מילות מפתח">
+            </div>
+            <div class="form-group">
+                <label for="language">שפה:</label>
+                <input type="text" id="language" name="language" placeholder="הכנס שפה">
+            </div>
+            <div class="form-group">
+                <label for="country">מדינה:</label>
+                <input type="text" id="country" name="country" placeholder="הכנס מדינה">
+            </div>
+            <div class="form-group">
+                <label for="category">קטגוריה:</label>
+                <input type="text" id="category" name="category" placeholder="הכנס קטגוריה">
+            </div>
+            <button type="submit">שלח בקשה</button>
+        </form>
+
+        <!-- מקום להצגת התגובה -->
+        <div id="response" class="response">
+            <p> </p>
+        </div>
+    </div>
+
+    <script>
+        // יצירת UUID
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // אירוע לשליחת הטופס
+        document.getElementById('createUserForm').addEventListener('submit', (event) => {
+            event.preventDefault(); // מונע שליחה אוטומטית של הטופס
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const keywords = document.getElementById('keywords').value;
+            const language = document.getElementById('language').value;
+            const country = document.getElementById('country').value;
+            const category = document.getElementById('category').value;
+
+            if (!name || !email || !password) {
+                alert('שדות חובה לא מולאו');
+                return;
+            }
+
+            // יצירת UUID עבור userId
+            const userId = generateUUID();
+
+            // יצירת גוף הבקשה
+            const data = {
+                userId: userId,
+                name: name,
+                email: email,
+                password: password,
+                keywords: keywords || "Trump",
+                language: language || "en",
+                country: country || "US",
+                category: category || "world"
+            };
+
+            // שליחת הבקשה באמצעות POST
+            fetch('http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/createUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerHTML = `<p> ${JSON.stringify(data.message)}</p>`;
+            })
+            .catch(error => {
+                document.getElementById('response').innerHTML = `<p class="error">שגיאה: ${error}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>

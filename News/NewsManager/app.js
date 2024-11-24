@@ -1,12 +1,20 @@
 const express = require('express');
-const amqp = require('amqplib/callback_api');  // הוספת ספריית RabbitMQ
+const amqp = require('amqplib/callback_api');
+const { DaprClient, HttpMethod } = require('@dapr/dapr');   // הוספת ספריית RabbitMQ
 const app = express();
 app.use(express.json());
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');  // מאפשר גישה מכל מקור
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // מאפשר את שיטות הבקשה
+    res.header('Access-Control-Allow-Headers', 'Content-Type'); // מאפשר את כותרות הבקשה
+    next();
+  });
+  
 // הגדרת RabbitMQ connection
 const RABBITMQ_URL = 'amqp://localhost';  // כתובת RabbitMQ
 const ACCESSOR_QUEUE = 'newsqueue';  // תור ה-Accessor
-
+const daprClient = new DaprClient('127.0.0.1', 3502); // חיבור ל-DAPR עם הכתובת והפורט המתאימים
+const serviceName = 'usersManager';
 // שליחת הודעה ל-RabbitMQ
 function sendToQueue(message) {
     return new Promise((resolve, reject) => {
@@ -38,11 +46,17 @@ function sendToQueue(message) {
 
 // Endpoint לקבלת בקשה
 app.post('/newsrequest', async (req, res) => {
-    const {name,email, category, keywords, country, channel } = req.body;
+    const {name,email,password} = req.body;
     try {
+        const user = await daprClient.invoker.invoke(serviceName, 'authenticateUser', HttpMethod.POST, { email ,password}); 
+        console.log(user.user);
+        
+        const { category, keywords, country, channel } = user.user.user;
+        console.log(category, keywords, country, channel);
+        
         const message = {name,email, category, keywords, country, channel };
         await sendToQueue(message);  // שליחה ל-RabbitMQ
-        res.status(200).send({ message: 'News request added to queue successfully' });
+        res.status(200).send({ message: 'בקשתך התקבלה כבר תקבל את החדשות היומיות למייל לפי העדפותיך' });
     } catch (error) {
         console.error('Error adding request to queue:', error);
         res.status(500).send({ message: 'Error adding request to queue' });

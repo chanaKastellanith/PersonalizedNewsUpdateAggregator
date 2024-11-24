@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@dapr/dapr": "^3.4.1",
+    "@huggingface/inference": "^2.8.1",
     "amqplib": "^0.10.4",
     "express": "^4.21.1"
   }

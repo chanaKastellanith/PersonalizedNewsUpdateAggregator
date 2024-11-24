@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שלח בקשות HTTP</title>
+    <link rel="stylesheet" href="sendNews.css">
+</head>
+<body>
+    <div class="container">
+        <h1>שלח בקשה לחדשות</h1>
+        
+        <!-- טופס עם תיבות קלט לשם ולמייל -->
+        <form id="requestForm">
+            <div class="form-group">
+                <label for="name">שם:</label>
+                <input type="text" id="name" name="name" placeholder="הכנס שם" required>
+            </div>
+            <div class="form-group">
+                <label for="email">מייל:</label>
+                <input type="email" id="email" name="email" placeholder="הכנס מייל" required>
+            </div>
+            <div class="form-group">
+                <label for="password">סיסמה:</label>
+                <input type="text" id="password" name="password" placeholder="הכנס סיסמה" required>
+            </div>
+            <button type="submit">שלח בקשה</button>
+        </form>
+
+        <!-- מקום להצגת התגובה -->
+        <div id="response" class="response">
+            <p></p>
+        </div>
+    </div>
+
+    <script>
+        // אירוע לשליחת הטופס
+        document.getElementById('requestForm').addEventListener('submit', (event) => {
+            event.preventDefault(); // מונע שליחה אוטומטית של הטופס
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // יצירת גוף הבקשה
+            const data = {
+                name: name,
+                email: email,
+                password:password
+            };
+
+            // שליחת הבקשה באמצעות POST
+            fetch('http://localhost:3022/newsrequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerHTML = `<p> ${JSON.stringify(data.message)}</p>`;
+            })
+            .catch(error => {
+                document.getElementById('response').innerHTML = `<p class="error">שגיאה: ${error}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>

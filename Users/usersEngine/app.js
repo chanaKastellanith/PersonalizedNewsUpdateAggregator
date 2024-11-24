@@ -26,7 +26,7 @@ app.post('/authenticateUser', async (req, res) => {
                 if (token) {
                     try {
                         verifyToken(token);  // בדיקת הטוקן
-                        return res.json({ message: 'User authenticated successfully',  token });
+                        return res.json({ message: 'User authenticated successfully',  token ,user});
                     } catch (error) {
                         return res.status(401).json({ message: 'Invalid or expired token' });
                     }
@@ -104,6 +104,6 @@ app.put('/updateUser', async (req, res) => {
         res.status(500).json({ message: 'Error updating user', error: err.message });
     }
 });
-app.listen(3002, () => {
+app.listen(3002,`0.0.0.0`, () => {
     console.log('UsersEngine service is running on port 3002');
 });

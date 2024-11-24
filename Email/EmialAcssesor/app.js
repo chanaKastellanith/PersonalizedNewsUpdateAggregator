@@ -14,15 +14,16 @@ async function listenToQueue() {
   await channel.assertQueue(ACCESSOR_QUEUE, { durable: true });
 
   console.log(`Accessor is waiting for messages in ${ACCESSOR_QUEUE}. To exit press CTRL+C`);
-
   channel.consume(
     ACCESSOR_QUEUE,
     async (msg) => {
-      const { toEmail, toName, newsItemsHTML } = JSON.parse(msg.content.toString());
-      console.log('Received message:', { toEmail, toName, newsItemsHTML });
+      console.log('aaa');
+      
+      const { email, name, newsItemsHTML } = JSON.parse(msg.content.toString());
+      console.log('Received message:', { email, name, newsItemsHTML });
 
       try {
-        sendEmailWithNews(toEmail, toName, newsItemsHTML);
+        sendEmailWithNews(email, name, newsItemsHTML);
         channel.ack(msg); // מאשר את ההודעה כדי להסיר אותה מהתור
       } catch (error) {
         console.error('Error processing message:', error.message);
@@ -35,6 +36,6 @@ async function listenToQueue() {
 // התחלת האזנה לתור
 listenToQueue();
 
-app.listen(3001, () => {
+app.listen(3032, () => {
   console.log('EmailAccessor service is running on port 3001');
 });
