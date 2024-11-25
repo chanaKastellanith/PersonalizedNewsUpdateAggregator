@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 // פתיחת מאגר הנתונים (ייווצר קובץ אם אין כזה)
-const db = new sqlite3.Database('../../db/initial-db.sqlite', (err) => {
+const db = new sqlite3.Database('./users.db', (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
     } else {

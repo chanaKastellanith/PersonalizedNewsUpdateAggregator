@@ -30,7 +30,11 @@ const validateEmail = (email) => {
 // פונקציה לאימות אם המשתמש קיים
 const validateUserExists = async (email,password) => {
     try {
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaa');
+        
         const response = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email,password });
+        console.log(response);
+        
         if (response) {
             console.log({response});
             return `המשתמש עם מזהה ${email} כבר קיים`;

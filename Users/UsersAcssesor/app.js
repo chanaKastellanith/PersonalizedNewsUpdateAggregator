@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { getUser, addUser, updateUser} = require('./userDB'); // הייבוא מ-usersDB
+const { getUser, addUser, updateUser} = require('./userDB'); 
 app.use(express.json());
 // ניתוב לקבלת משתמש לפי מזהה
 app.post('/getUser', async (req, res) => {
@@ -30,31 +30,28 @@ app.post('/addUser', async (req, res) => {
         return res.status(201).json({ message: `User ${userId} added successfully` });
     });
 });
-
-// ניתוב לעדכון פרטי משתמש
 app.post('/updateUser', async (req, res) => {
     console.log('/updateUser');
-    const { userId, name, email, password, keywords, language, country,category } = req.body;
-    console.log({ userId, name, email, password, keywords, language, country,category });
+    const { name, email, password, keywords, language, country, category } = req.body;
+
     try {
         getUser(email, password, (user) => {
-            if (!user)
+            if (!user) {
                 return res.status(404).json({ message: 'User not found' });
-        });
-        updateUser(userId, name, email, password, keywords, language, country,category, (err, response) => {
-            if (err) {
-                console.error('Error updating user:', err.message);
-                console.log({ response });
-                return res.status(500).json({ message: 'Error updating user', error: err.message });
             }
+            const userId = user.userId;
+            updateUser(userId, name, email, password, keywords, language, country, category, (err, response) => {
+                if (err) {
+                    console.error('Error updating user:', err.message);
+                    return res.status(500).json({ message: 'Error updating user', error: err.message });
+                }
+              return  res.json({ message: `User ${userId} updated successfully` });
+            });
         });
-        res.json({ message: `User ${userId} updated successfully` });
     } catch (err) {
         res.status(500).json({ message: 'Error updating user', error: err.message });
     }
 });
-
-// ניתוב למחיקת משתמש
-app.listen(3001,`0.0.0.0`, () => {
+app.listen(3001, () => {
     console.log('usersAcssesor service is running on port 3001');
 });

@@ -58,18 +58,16 @@ app.post('/v1.0/invoke/usersEngine/method/createUser', async (req, res) => {
 
 // ניתוב לעדכון פרטי משתמש
 app.put('/v1.0/invoke/usersEngine/method/updateUser', async (req, res) => {
-    const { userId, name, email, password, keywords, language, country,category } = req.body;
-    console.log(userId, name, email, password, keywords, language, country,category);
+    const {  name, email, password, keywords, language, country,category } = req.body;
+    console.log( name, email, password, keywords, language, country,category);
     try {
         // שליחת בקשה ל-DAPR לעדכון פרטי המשתמש
-       const response= await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, { userId,name, email, password, keywords, language, country,category});
-       console.log({response});
-       
-        return res.json({message:`המשתמש ${userId} עודכן בהצלחה`});
+        await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, {name, email, password, keywords, language, country,category});
+        return res.json({message:`המשתמש ${name} עודכן בהצלחה`});
     } catch (err) {
         res.status(500).json({ message: 'Error updating user', error: err.message });
     }
 });
-app.listen(3003, `0.0.0.0`,() => {
+app.listen(3003,() => {
     console.log('USERMANAGER service is running on port 3003');
 });
