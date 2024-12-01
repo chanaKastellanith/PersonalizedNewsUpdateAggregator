@@ -48,6 +48,8 @@ app.put('/v1.0/invoke/usersEngine/method/updateUser', async (req, res) => {
         await daprClient.invoker.invoke(serviceName, 'updateUser', HttpMethod.PUT, { name, email, password, keywords, language, country, category });
         return res.json({ message: `המשתמש ${name} עודכן בהצלחה` });
     } catch (err) {
+        console.log(err.message);
+        
         res.status(500).json({ message: 'Error updating user', error: err.message });
     }
 });

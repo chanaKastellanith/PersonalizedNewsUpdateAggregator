@@ -3,8 +3,20 @@ const amqp = require('amqplib');
 const app = express();
 const {sendEmailWithNews}=require('./emailApi')
 app.use(express.json());
+let RABBITMQ_URL; // הגדרה גלובלית של המשתנה
 
-const RABBITMQ_URL = 'amqp://rabbitmq';  // במקום 'localhost'
+(async () => {
+  const isDocker = (await import('is-docker')).default;
+  RABBITMQ_URL = isDocker() ? 'amqp://rabbitmq' : 'amqp://localhost';
+  console.log(`Using RabbitMQ URL: ${RABBITMQ_URL}`);
+
+  // התחלת האזנה לתור לאחר קביעת ה-URL
+  listenToQueue();
+})();
+
+
+
+// const RABBITMQ_URL = 'amqp://rabbitmq';  // במקום 'localhost'
 const ACCESSOR_QUEUE = 'email_queue';
 
 
@@ -30,7 +42,6 @@ async function listenToQueue() {
   );
 }
 
-listenToQueue();
 
 app.listen(3032, () => {
   console.log('EmailAccessor service is running on port 3001');

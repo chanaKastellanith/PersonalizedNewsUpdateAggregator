@@ -3,8 +3,17 @@ const { generateHTMLContent } = require('./generateHTMLContent');
 const amqp = require('amqplib'); 
 const app = express();
 app.use(express.json());
+let RABBITMQ_URL; // הגדרה גלובלית של המשתנה
 
-const RABBITMQ_URL = 'amqp://rabbitmq';  // במקום 'localhost'
+(async () => {
+  const isDocker = (await import('is-docker')).default;
+  RABBITMQ_URL = isDocker() ? 'amqp://rabbitmq' : 'amqp://localhost';
+  console.log(`Using RabbitMQ URL: ${RABBITMQ_URL}`);
+
+  // התחלת האזנה לתור לאחר קביעת ה-URL
+  listenToQueue();
+})();
+
 const SEND_EMAIL_QUEUE = 'engine_response_queue'; // שם התור לקבלת בקשות
 const ENGINE_QUEUE = 'email_queue'; // שם התור להעברת הודעות ל-Accessor
 
@@ -56,7 +65,6 @@ async function listenToQueue() {
   );
 }
 
-listenToQueue();
 app.listen(3031, () => {
   console.log('EmailEngine service is running on port 3001');
 });

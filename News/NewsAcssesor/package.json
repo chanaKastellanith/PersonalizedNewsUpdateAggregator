@@ -3,6 +3,7 @@
     "amqplib": "^0.10.4",
     "currentsapi": "^0.1.0",
     "express": "^4.21.1",
+    "is-docker": "^3.0.0",
     "newsapi": "^2.4.1"
   },
   "name": "newsacssesor",
