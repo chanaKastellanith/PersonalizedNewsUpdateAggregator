@@ -1,7 +1,3 @@
-# PersonalizedNewsUpdateAggregator
-The project aims to develop a microservice-based application that aggregates news and technology updates based on user preferences
-
-
 # News Update Aggregator
 
 This project is a web application designed to manage and update user data using MongoDB, with an Express.js backend. It integrates with Docker and Dapr for microservices management.
@@ -9,7 +5,9 @@ This project is a web application designed to manage and update user data using 
 ## Getting Started:
 1. Clone the repository.
 2. Navigate to the project directory.
-3. Run the command `docker-compose up` to start the services and their Dapr sidecars.
+3. * Run the command `docker-compose up` to start the services and their Dapr sidecars.
+    * or run each service with the command `npm start`
+
 
 
 ## Technologies Used:
@@ -20,12 +18,23 @@ This project is a web application designed to manage and update user data using 
 - MongoDB: The database used to store and retrieve users entries.
 
 ## Architecture:
-- Manager Service: Accepts requests (Get, Post, Delete) related to phone entries, validates them, and pushes to the RabbitMQ queue via Dapr.
-- Accessor Service: Picks up requests from the RabbitMQ queue, processes the requests, and performs actions on MongoDB.
+#### USERS SERVICES
+- Manager Service: Accepts requests (Get, Post, Put ) related to users entries, and move to emgine with  Dapr SDK.
+- Engine Service: Accepts requests (Get, Post, Put ) related to users entries, validates them,check or create token and move to acssesor with  Dapr SDK.
+- Accessor Service: get the request, and performs actions on MongoDB.
+ #### NEWS SERVICES
+- Manager Service: Accepts requests to get news and call to user manager toget preference of user , and push this  to Rabbit MQ.
+- Accessor Service:listen to queue  get the request ,process the request and connect to API to get news acoording  prefference .
+push the news to anew queue.
+
+ #### EMAIL SERVICES
+- Engine Service:listen to queue  Accepts the daily news and desighn itwith HTML and CSS, 
+push the process news to queue.
+- Accessor Service:listen to queue  get the daily news and user  deatails ,connect to mailjet API and send email to user.
+### more services
 - RabbitMQ: Used as the messaging system for the exchange of requests between the Manager and Accessor services.
 - Dapr: Handles the communication between the Manager and Accessor services and the RabbitMQ queue.
 - MongoDB: The database used to store and retrieve phone entries.
-
 
 ## API Endpoints
 - `POST /updateUser`: Updates user data.
