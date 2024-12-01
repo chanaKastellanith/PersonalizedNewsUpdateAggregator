@@ -4,7 +4,7 @@ const { getNews } = require('./apiNews');
 const app = express();
 app.use(express.json());
 
-const RABBITMQ_URL = 'amqp://localhost';
+const RABBITMQ_URL = 'amqp://rabbitmq';  
 const ACCESSOR_QUEUE = 'newsqueue';
 const ENGINE_QUEUE = 'engine_response_queue';
 
@@ -40,7 +40,7 @@ async function listenToQueue() {
         }
     }, { noAck: true });
 }
-// התחלת האזנה
+
 listenToQueue();
 
 app.listen(3020, () => {

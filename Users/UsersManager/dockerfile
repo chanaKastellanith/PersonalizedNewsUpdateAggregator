@@ -3,12 +3,10 @@ FROM node:16
 
 # יצירת תיקייה לעבודה
 WORKDIR /app
-RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
-
 # העתקת קבצי הפרויקט לתוך הקונטיינר
 COPY package*.json ./
 RUN npm install
 COPY . .
 
 # הפעלת השרת
-CMD ["npm", "start"]
+CMD ["node", "app.js"]

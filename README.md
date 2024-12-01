@@ -1,6 +1,8 @@
 # News Update Aggregator
 
-This project is a web application designed to manage and update user data using MongoDB, with an Express.js backend. It integrates with Docker and Dapr for microservices management.
+This project is a web application designed to get News Update Aggregator.
+with manage users in mongo db .
+ It integrates with Docker and Dapr for microservices News Update Aggregatormanagement .
 
 ## Getting Started:
 1. Clone the repository.
@@ -36,11 +38,13 @@ push the process news to queue.
 - Dapr: Handles the communication between the Manager and Accessor services and the RabbitMQ queue.
 - MongoDB: The database used to store and retrieve phone entries.
 
+![alt text](image-1.png)
+
 ## API Endpoints
-- `POST /updateUser`: Updates user data.
-- `POST /addUser`: Adds a new user.
-- `GET /getUser`: Fetches a user based on email and password.
-- `GET /getNews`: toget the daily news acoording persinal preference.
+- POST `http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/updateUser`: Updates user data.
+- POST `'http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/createUser'`: Adds a new user.
+- POST  `'http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/getUser'`: Fetches a user based on email and password.
+- POST `'http://localhost:3022/newsrequest`: toget the daily news acoording personal prefference.
 
 ## Database Models
 

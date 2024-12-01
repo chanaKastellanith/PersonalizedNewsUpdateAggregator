@@ -4,7 +4,7 @@ const app = express();
 const {sendEmailWithNews}=require('./emailApi')
 app.use(express.json());
 
-const RABBITMQ_URL = 'amqp://localhost'; 
+const RABBITMQ_URL = 'amqp://rabbitmq';  // במקום 'localhost'
 const ACCESSOR_QUEUE = 'email_queue';
 
 

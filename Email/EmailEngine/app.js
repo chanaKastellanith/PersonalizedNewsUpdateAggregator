@@ -4,7 +4,7 @@ const amqp = require('amqplib');
 const app = express();
 app.use(express.json());
 
-const RABBITMQ_URL = 'amqp://localhost'; 
+const RABBITMQ_URL = 'amqp://rabbitmq';  // במקום 'localhost'
 const SEND_EMAIL_QUEUE = 'engine_response_queue'; // שם התור לקבלת בקשות
 const ENGINE_QUEUE = 'email_queue'; // שם התור להעברת הודעות ל-Accessor
 

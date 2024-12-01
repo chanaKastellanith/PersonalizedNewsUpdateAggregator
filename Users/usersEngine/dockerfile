@@ -10,4 +10,4 @@ RUN npm install
 COPY . .
 
 # הפעלת השרת
-CMD ["npm ", "start"]
+CMD ["node", "app.js"]
