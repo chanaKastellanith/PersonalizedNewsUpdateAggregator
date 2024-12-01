@@ -1,13 +1,13 @@
 const express = require('express');
-const amqp = require('amqplib'); // ספריית RabbitMQ
+const amqp = require('amqplib'); 
 const app = express();
 const {sendEmailWithNews}=require('./emailApi')
 app.use(express.json());
 
-const RABBITMQ_URL = 'amqp://localhost'; // כתובת RabbitMQ
-const ACCESSOR_QUEUE = 'email_queue'; // שם התור
+const RABBITMQ_URL = 'amqp://localhost'; 
+const ACCESSOR_QUEUE = 'email_queue';
 
-// התחברות ל-RabbitMQ והאזנה להודעות בתור
+
 async function listenToQueue() {
   const connection = await amqp.connect(RABBITMQ_URL);
   const channel = await connection.createChannel();
@@ -17,23 +17,19 @@ async function listenToQueue() {
   channel.consume(
     ACCESSOR_QUEUE,
     async (msg) => {
-      console.log('aaa');
       
       const { email, name, newsItemsHTML } = JSON.parse(msg.content.toString());
-      console.log('Received message:', { email, name, newsItemsHTML });
-
       try {
         sendEmailWithNews(email, name, newsItemsHTML);
-        channel.ack(msg); // מאשר את ההודעה כדי להסיר אותה מהתור
+        channel.ack(msg); 
       } catch (error) {
         console.error('Error processing message:', error.message);
       }
     },
-    { noAck: false } // דורש אישור ידני להודעות
+    { noAck: false } 
   );
 }
 
-// התחלת האזנה לתור
 listenToQueue();
 
 app.listen(3032, () => {

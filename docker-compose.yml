@@ -1,259 +1,10 @@
-# services:
-#   # usersEngine Service
-#   usersEngine:
-#     image: users_engine_image
-#     container_name: users_engine_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3002:3002"
-#     environment:
-#       - DAPR_APP_ID=usersEngine
-#       - DAPR_APP_PORT=3501
-#     volumes:
-#       - ./dapr/:/dapr
-#     command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3501", "-dapr-http-port", "3500"]
-  
-#   # usersAccessor Service
-#   usersAccessor:
-#     image: users_accessor_image
-#     container_name: users_accessor_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3001:3001"
-#     environment:
-#       - DAPR_APP_ID=usersAccessor
-#       - DAPR_APP_PORT=3500
-#     volumes:
-#       - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersAcssesor\\users.db:/app/users.db"
-#     command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
-
-#   # usersManager Service
-#   usersManager:
-#     image: users_manager_image
-#     container_name: users_manager_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3003:3003"
-#     environment:
-#       - DAPR_APP_ID=usersManager
-#       - DAPR_APP_PORT=3502
-#     volumes:
-#       - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersManager\\users.db:/app/users.db"  # הוספתי את ה-SQLite3 פה
-#     command: ["./daprd", "-app-id", "usersManager", "-app-port", "3502", "-dapr-http-port", "3503"]
-
-# networks:
-#   network-dapr:
-#     driver: bridge
-# services:
-#   # usersEngine Service
-#   usersEngine:
-#     build:
-#       context: ./Users/usersEngine
-#     image: usersengine
-#     container_name: users_engine_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3002:3002"
-#     environment:
-#       - DAPR_APP_ID=usersengine
-#       - DAPR_APP_PORT=3501
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin  # העתקת דפר לקונטיינר
-#     command: ["./daprd.exe", "-app-id", "usersengine", "-app-port", "3501", "-dapr-http-port", "3500"]
-
-
-#   # usersAccessor Service
-#   usersAccessor:
-#     build:
-#       context: ./Users/UsersAcssesor
-#     image: users_accessor_image  # השתמש בתמונה שכבר יצרת
-#     container_name: users_accessor_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3001:3001"
-#     environment:
-#       - DAPR_APP_ID=usersaccessor
-#       - DAPR_HTTP_PORT=3501
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin
-#       # - "C:\\Users\\user\\Chani\\PersonalizedNewsUpdateAggregator\\Users\\UsersAcssesor\\users.db:/app/users.db"
-#     command: ["./daprd.exe", "-app-id", "usersaccessor", "-app-port", "3001", "-dapr-http-port", "3501"]
-
-#   # usersManager Service
-#   usersManager:
-#     build:
-#       context: ./Users/UsersManager
-#     image: usersmanager
-#     container_name: users_manager_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3003:3003"
-#     environment:
-#       - DAPR_APP_ID=usersmanager
-#       - DAPR_APP_PORT=3502
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin  # העתקת דפר לקונטיינר
-#     command: ["./daprd.exe", "-app-id", "usersmanager", "-app-port", "3502", "-dapr-http-port", "3503"]
-
-
-#   usersEngine-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3501", "-dapr-http-port", "3500"]
-#     network_mode: "service:usersEngine"
-#     volumes:
-#       - ./dapr/:/dapr
-
-#   usersAccessor-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
-#     network_mode: "service:usersAccessor"
-#     volumes:
-#       - ./dapr/:/dapr
-
-#   usersManager-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersManager", "-app-port", "3502", "-dapr-http-port", "3503"]
-#     network_mode: "service:usersManager"
-#     volumes:
-#       - ./dapr/:/dapr
-# networks:
-#   network-dapr:
-#     driver: bridge
-
-# services:
-#   # usersEngine Service
-#   usersEngine:
-#     build:
-#       context: ./Users/usersEngine
-#     image: usersengine
-#     container_name: users_engine_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3002:3002"
-#     environment:
-#       - DAPR_APP_ID=usersengine
-#       - DAPR_APP_PORT=3501
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin  # Mount DAPR binaries
-#     command: ["./daprd", "-app-id", "usersengine", "-app-port", "3501", "-dapr-http-port", "3500"]
-
-#   # usersAccessor Service
-#   usersAccessor:
-#     build:
-#       context: ./Users/UsersAccessor
-#     image: users_accessor_image  # Use the image you've already created
-#     container_name: users_accessor_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3001:3001"
-#     environment:
-#       - DAPR_APP_ID=usersaccessor
-#       - DAPR_HTTP_PORT=3501
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin  # Mount DAPR binaries
-#     command: ["./daprd", "-app-id", "usersaccessor", "-app-port", "3001", "-dapr-http-port", "3501"]
-
-#   # usersManager Service
-#   usersManager:
-#     build:
-#       context: ./Users/UsersManager
-#     image: usersmanager
-#     container_name: users_manager_container
-#     networks:
-#       - network-dapr
-#     ports:
-#       - "3003:3003"
-#     environment:
-#       - DAPR_APP_ID=usersmanager
-#       - DAPR_APP_PORT=3502
-#     volumes:
-#       - C:/Users/user/.dapr/bin:/usr/local/bin  # Mount DAPR binaries
-#     command: ["./daprd", "-app-id", "usersmanager", "-app-port", "3502", "-dapr-http-port", "3503"]
-
-#   # DAPR containers
-#   usersEngine-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3501", "-dapr-http-port", "3500"]
-#     network_mode: "service:usersEngine"
-#     volumes:
-#       - ./dapr/:/dapr
-
-#   usersAccessor-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
-#     network_mode: "service:usersAccessor"
-#     volumes:
-#       - ./dapr/:/dapr
-
-#   usersManager-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersManager", "-app-port", "3502", "-dapr-http-port", "3503"]
-#     network_mode: "service:usersManager"
-#     volumes:
-#       - ./dapr/:/dapr
-
-# networks:
-#   network-dapr:
-#     driver: bridge
-
-
-
-
-
-
-
-
-
-# services:
-#   usersAccessor:
-#       build:
-#         context: ./Users/UsersAcssesor
-#       image: usersaccessor  
-#       container_name: usersaccessor
-#       networks:
-#         - network-dapr
-#       ports:
-#         - "3001:3001"
-#       environment:
-#         - DAPR_APP_ID=usersaccessor
-#         - DAPR_HTTP_PORT=3501
-#       volumes:
-#         - C:/Users/user/.dapr/bin:/usr/local/bin
-       
-#       command: ["./daprd.exe", "-app-id", "usersaccessor", "-app-port", "3001", "-dapr-http-port", "3501"]
- 
-#   usersAccessor-dapr:
-#     image: "daprio/daprd:edge"
-#     command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3500", "-dapr-http-port", "3501"]
-#     network_mode: "service:usersAccessor"
-#     volumes:
-#       - ./dapr/:/dapr
-# networks:
-#   network-dapr:
-#     driver: bridge
-
 services:
-  users-engine:
-    image: users_engine_image
-    container_name: users_engine_container
-    networks:
-      - network-dapr
-    ports:
-      - "3002:3002"
-      - "3501:3501"
-    environment:
-      - DAPR_APP_ID=usersEngine
-      - DAPR_APP_PORT=3501
+
+######## USERS SERVICES ##############
+
   users-manager:
-    image: users_manager_image
+    build:
+      context: ./Users/UsersManager
     container_name: users_manager_container
     networks:
       - network-dapr
@@ -263,49 +14,207 @@ services:
     environment:
       - DAPR_APP_ID=usersManager
       - DAPR_APP_PORT=3502
-  users-accessor:
-    image: users_accessor_image
-    container_name: users_accessor_container
-    networks:
-    - network-dapr
-    ports:
-    - "3001:3001"
-    - "3500:3500"
-    environment:
-    - DAPR_APP_ID=usersAccessor
-    - DAPR_APP_PORT=3500
- 
- 
-  users-accessor-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3001", "-dapr-http-port", "3500"]
-    volumes:
-      - "./dapr/:/dapr"
-    # depends_on:
-    #   - users-accessor
-    network_mode: "service:users-accessor"
- 
-  users-engine-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3002", "-dapr-http-port", "3501"]
-    volumes:
-      - "./dapr/:/dapr"
-    # depends_on:
-    #   - users-engine
-    network_mode: "service:users-engine"  
-  users-manager-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd", "-app-id", "usersManager", "-app-port", "3003", "-dapr-http-port", "3502"]
-    volumes:
-      - "./dapr/:/dapr"
-    # depends_on:
-    #   - users-engine
-    network_mode: "service:users-manager"  
-  mongodb:
-    image: mongo
-    ports:
-      - 27017:27017
+
+  users-engine:
+    build:
+      context: ./Users/UsersEngine
+    container_name: users_engine_container
     networks:
       - network-dapr
+    ports:
+      - "3002:3002"
+      - "3501:3501"
+    environment:
+      - DAPR_APP_ID=usersEngine
+      - DAPR_APP_PORT=3501
+
+  # users-accessor:
+  #   build:
+  #     context: ./Users/UsersAcssesor
+  #   container_name: users_accessor_container
+  #   networks:
+  #     - network-dapr
+  #   ports:
+  #     - "3001:3001"
+  #     - "3500:3500"
+  #   environment:
+  #     - DAPR_APP_ID=usersAccessor
+  #     - DAPR_APP_PORT=3500
+
+  users-manager-dapr:
+    image: "daprio/daprd:edge"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    command: ["./daprd", "-app-id", "usersManager", "-app-port", "3003", "-dapr-http-port", "3502"]
+    # volumes:
+    #   - "./dapr/:/dapr"
+    depends_on:
+      - users-manager
+    networks:
+     - network-dapr  
+
+  users-engine-dapr:
+    image: "daprio/daprd:edge"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    command: ["./daprd", "-app-id", "usersEngine", "-app-port", "3002", "-dapr-http-port", "3501"]
+    # volumes:
+    #   - "./dapr/:/dapr"
+    depends_on:
+      - users-engine
+    networks:
+     - network-dapr
+
+  # users-accessor-dapr:
+  #   image: "daprio/daprd:edge"
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 10
+  #       window: 120s
+  #   command: ["./daprd", "-app-id", "usersAccessor", "-app-port", "3001", "-dapr-http-port", "3500"]
+  #   volumes:
+  #     - "./dapr/:/dapr"
+  #   depends_on:
+  #     - mongodb
+  #   network_mode: "service:users-accessor"
+
+  # mongodb:
+  #   image: mongo
+  #   ports:
+  #     - "27017:27017"
+  #   networks:
+  #     - network-dapr
+
+########### NEWS SERVICES##################
+  # news-manager:
+  #   build:
+  #     context: ./News/NewsManager
+  #   container_name: news_manager_container
+  #   networks:
+  #     - network-dapr
+  #   ports:
+  #     - "3022:3022"
+  #     - "3522:3522"
+  #   environment:
+  #     - DAPR_APP_ID=newsManager
+  #     - DAPR_APP_PORT=3522
+
+  # news-accessor:
+  #   build:
+  #     context: ./News/NewsAcssesor
+  #   container_name: news_accessor_container
+  #   networks:
+  #     - network-dapr
+  #   ports:
+  #     - "3020:3020"
+  #     - "3520:3520"
+  #   environment:
+  #     - DAPR_APP_ID=newsAccessor
+  #     - DAPR_APP_PORT=3520
+
+  # news-manager-dapr:
+  #   image: "daprio/daprd:edge"
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 10
+  #       window: 120s
+  #   command: ["./daprd", "-app-id", "newsManager", "-app-port", "3022", "-dapr-http-port", "3522"]
+  #   volumes:
+  #     - "./dapr/:/dapr"
+  #   depends_on:
+  #     - news-manager
+  #   network_mode: "service:news-manager"  
+
+
+  # news-accessor-dapr:
+  #   image: "daprio/daprd:edge"
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 10
+  #       window: 120s
+  #   command: ["./daprd", "-app-id", "newsAccessor", "-app-port", "3020", "-dapr-http-port", "3520"]
+  #   volumes:
+  #     - "./dapr/:/dapr"
+  #   depends_on:
+  #     - news-accessor
+  #   network_mode: "service:news-accessor"
+
+  # ######## EMAIL SERVICES ##############
+  # email-engine:
+  #   build:
+  #     context: ./Email/EmailEngine
+  #   container_name: email_engine_container
+  #   networks:
+  #     - network-dapr
+  #   ports:
+  #     - "3031:3031"
+  #     - "3531:3531"
+  #   environment:
+  #     - DAPR_APP_ID=emailEngine
+  #     - DAPR_APP_PORT=3531
+
+  # email-accessor:
+  #   build:
+  #     context: ./Email/EmialAcssesor
+  #   container_name: email_accessor_container
+  #   networks:
+  #     - network-dapr
+  #   ports:
+  #     - "3032:3032"
+  #     - "3532:3532"
+  #   environment:
+  #     - DAPR_APP_ID=emailAccessor
+  #     - DAPR_APP_PORT=3532
+
+  # email-engine-dapr:
+  #   image: "daprio/daprd:edge"
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 10
+  #       window: 120s
+  #   command: ["./daprd", "-app-id", "emailEngine", "-app-port", "3031", "-dapr-http-port", "3531"]
+  #   volumes:
+  #     - "./dapr/:/dapr"
+  #   depends_on:
+  #     - email-engine
+  #   network_mode: "service:email-engine" 
+
+  # email-accessor-dapr:
+  #   image: "daprio/daprd:edge"
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 10
+  #       window: 120s
+  #   command: ["./daprd", "-app-id", "emailAccessor", "-app-port", "3032", "-dapr-http-port", "3532"]
+  #   volumes:
+  #     - "./dapr/:/dapr"
+  #   depends_on:
+  #     - email-accessor
+  #   network_mode: "service:email-accessor"
 networks:
   network-dapr:
+   
+
+
+
+
+
+

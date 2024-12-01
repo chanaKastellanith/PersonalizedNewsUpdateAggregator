@@ -1,14 +1,13 @@
 const express = require('express');
 const { generateHTMLContent } = require('./generateHTMLContent');
-const amqp = require('amqplib'); // ספריית RabbitMQ
+const amqp = require('amqplib'); 
 const app = express();
 app.use(express.json());
 
-const RABBITMQ_URL = 'amqp://localhost'; // כתובת RabbitMQ
+const RABBITMQ_URL = 'amqp://localhost'; 
 const SEND_EMAIL_QUEUE = 'engine_response_queue'; // שם התור לקבלת בקשות
 const ENGINE_QUEUE = 'email_queue'; // שם התור להעברת הודעות ל-Accessor
 
-// התחברות ל-RabbitMQ ושליחת הודעה לתור
 async function publishToQueue(message) {
   const connection = await amqp.connect(RABBITMQ_URL);
   const channel = await connection.createChannel();
@@ -21,7 +20,6 @@ async function publishToQueue(message) {
   await connection.close();
 }
 
-// התחברות ל-RabbitMQ והאזנה ל-send_email_queue
 async function listenToQueue() {
   const connection = await amqp.connect(RABBITMQ_URL);
   const channel = await connection.createChannel();
@@ -35,36 +33,30 @@ async function listenToQueue() {
       try {
         const { user, ...newsItems } = JSON.parse(msg.content.toString());
         const { name: name, email: email } = user;
-        console.log({newsItems});
-        console.log({name,email});
         
         
         if (!name || !email ) {
           console.error('Invalid message structure:', msg.content.toString());
-          return channel.ack(msg); // מאשר את ההודעה כדי למנוע עיבוד מחדש
+          return channel.ack(msg); 
         }
         const newsItemsArray = Object.values(newsItems);
 
         const newsItemsHTML = generateHTMLContent(newsItemsArray);
         const processedMessage = { email, name, newsItemsHTML };
 
-        // שליחת המידע המעובד לתור השני
         await publishToQueue(processedMessage);
         console.log('Processed and forwarded message:', processedMessage);
 
-        channel.ack(msg); // מאשר את ההודעה
+        channel.ack(msg); 
       } catch (error) {
         console.error('Error processing message:', error.message);
-        // לא מאשר את ההודעה כדי להחזיר אותה לתור (או אפשר להגדיר טיפול נוסף)
       }
     },
-    { noAck: false } // דורש אישור ידני כדי למנוע איבוד הודעות
+    { noAck: false } 
   );
 }
 
-// התחלת האזנה לתור
 listenToQueue();
-
 app.listen(3031, () => {
   console.log('EmailEngine service is running on port 3001');
 });

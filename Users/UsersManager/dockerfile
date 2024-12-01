@@ -1,22 +1,14 @@
-# Use the official Node.js image as the base image
-FROM node:18
-# Set the working directory inside the container
+# משתמש ב-node.js כבסיס
+FROM node:16
+
+# יצירת תיקייה לעבודה
 WORKDIR /app
-# COPY node_modules/sqlite3 /node_modules/sqlite3
+RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 
-# Copy package.json and package-lock.json to the working directory
-COPY package.json ./
-
+# העתקת קבצי הפרויקט לתוך הקונטיינר
+COPY package*.json ./
 RUN npm install
-# Install dependencies
-
-
-# Copy the rest of the application code to the working directory
 COPY . .
 
-# Expose the application port
-EXPOSE 3003
-
-# Define the command to run the application
-CMD ["node", "app.js"]
-
+# הפעלת השרת
+CMD ["npm", "start"]

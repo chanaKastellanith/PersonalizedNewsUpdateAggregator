@@ -1,6 +1,6 @@
 const express = require('express');
-const amqp = require('amqplib'); // גרסה החדשה של amqplib
-const { getNews } = require('./apiNews'); // הייבוא של הפונקציה שמביאה חדשות
+const amqp = require('amqplib'); 
+const { getNews } = require('./apiNews'); 
 const app = express();
 app.use(express.json());
 
@@ -8,7 +8,7 @@ const RABBITMQ_URL = 'amqp://localhost';
 const ACCESSOR_QUEUE = 'newsqueue';
 const ENGINE_QUEUE = 'engine_response_queue';
 
-// התחברות ל-RabbitMQ והאזנה לתור
+
 async function listenToQueue() {
     const connection = await amqp.connect(RABBITMQ_URL);
     const channel = await connection.createChannel();
@@ -19,12 +19,9 @@ async function listenToQueue() {
 
     channel.consume(ACCESSOR_QUEUE, async (msg) => {
         const {name,email, category, keywords, country } = JSON.parse(msg.content.toString());
-        console.log('Received request from Manager:', { category, keywords, country });
-
         try {
             // קריאה ל-API כדי לקבל חדשות
             const news = await getNews(category, keywords, country);
-            console.log('News fetched:', news);
             const userNews = {
                 ...news, // תוכן החדשות
                 user: {

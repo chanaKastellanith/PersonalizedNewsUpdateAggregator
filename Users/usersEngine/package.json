@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "app":"dapr run --app-id usersEngine --app-port 3002 --dapr-http-port 3501 node app.js ",
+    "start":"dapr run --app-id usersEngine --app-port 3002 --dapr-http-port 3501 node app.js ",
     "test": "npm run test"
   },
   "keywords": [],

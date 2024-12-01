@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "chana kastelanitz",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "openai": "^4.73.1"
+  }
 }

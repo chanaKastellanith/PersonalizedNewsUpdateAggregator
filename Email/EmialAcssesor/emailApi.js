@@ -1,11 +1,10 @@
 const Mailjet = require('node-mailjet');
-// התחברות ל-API של Mailjet עם המפתחות שלך
+
 const mailjet = Mailjet.apiConnect(
   '8e065c70d0fcaf55b13e8ced06669f38',
   '72f51c5ee8edfe5082f6fc0a81ac48d1'
 );
 
-// שליחת אימייל מעוצב
 const sendEmailWithNews = (toEmail, toName, newsItems) => {
   if (!toEmail || !newsItems || newsItems.length === 0) {
     console.error("Missing required parameters: 'toEmail' or 'newsItems'");

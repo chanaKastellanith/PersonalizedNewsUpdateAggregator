@@ -9,8 +9,7 @@
 <body>
     <div class="container">
         <h1>יצירת משתמש חדש</h1>
-        
-        <!-- טופס עם תיבות קלט לשם, מייל, סיסמה ושדות נוספים -->
+
         <form id="createUserForm">
             <div class="form-group">
                 <label for="name">שם <span class="required">*</span>:</label>
@@ -43,14 +42,12 @@
             <button type="submit">שלח בקשה</button>
         </form>
 
-        <!-- מקום להצגת התגובה -->
         <div id="response" class="response">
             <p> </p>
         </div>
     </div>
 
     <script>
-        // יצירת UUID
         function generateUUID() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 var r = Math.random() * 16 | 0,
@@ -59,10 +56,8 @@
             });
         }
 
-        // אירוע לשליחת הטופס
         document.getElementById('createUserForm').addEventListener('submit', (event) => {
-            event.preventDefault(); // מונע שליחה אוטומטית של הטופס
-
+            event.preventDefault(); 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -76,10 +71,8 @@
                 return;
             }
 
-            // יצירת UUID עבור userId
             const userId = generateUUID();
 
-            // יצירת גוף הבקשה
             const data = {
                 userId: userId,
                 name: name,
@@ -91,7 +84,6 @@
                 category: category || "world"
             };
 
-            // שליחת הבקשה באמצעות POST
             fetch('http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/createUser', {
                 method: 'POST',
                 headers: {

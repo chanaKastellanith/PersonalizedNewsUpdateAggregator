@@ -2,7 +2,7 @@ const CurrentsAPI = require('currentsapi');
 const currentsapi = new CurrentsAPI('C3Uc41Hlkcn-8fQszZ3rB7slPWGXdmXMAg7Q5DDfTq91k90a');
 // To query latest news
 // All options passed to search are optional
-async function getNews(category = 'world', keywords = 'Trump', country = 'US') {
+async function getNews(category = 'world', keywords, country = 'US') {
     try {
         const response = await currentsapi.search({
             keywords: keywords,

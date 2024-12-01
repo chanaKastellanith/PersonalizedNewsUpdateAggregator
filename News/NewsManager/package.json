@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "app": "dapr run --app-id newsManager --app-port 3022 --dapr-http-port 3522  node app.js",
+    "start": "dapr run --app-id newsManager --app-port 3022 --dapr-http-port 3522  node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "chana kastellanitz",
