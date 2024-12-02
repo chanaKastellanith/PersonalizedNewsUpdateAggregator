@@ -41,11 +41,12 @@ push the process news to queue.
 ![alt text](image-1.png)
 
 ## API Endpoints
-- POST `http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/updateUser`: Updates user data.
+- PUT `http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/updateUser`: Updates user data.
 - POST `'http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/createUser'`: Adds a new user.
 - POST  `'http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/getUser'`: Fetches a user based on email and password.
 - POST `'http://localhost:3022/newsrequest`: toget the daily news acoording personal prefference.
-
+### POSTMAN COLLECTION
+ https://zionet.postman.co/workspace/zionet-Workspace~12b94e28-9080-4380-8339-7b6d55814e84/collection/37608556-d39a8311-e26b-4aa0-a8d2-b9d062fc910f?action=share&creator=37608556
 ## Database Models
 
 - **Users**: Stored in MongoDB with fields: `userId`, `name`, `email`, `password`, `keywords`, `language`, `country`, `category`.
