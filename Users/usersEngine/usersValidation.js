@@ -25,14 +25,16 @@ const validateEmail = (email) => {
     return null;
 };
 
-const validateUserExists = async (email,password) => {
+const validateUserExists = async (email,name) => {
     try {
-        const response = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email,password });
+        const response = await daprClient.invoker.invoke(serviceName, 'getUserByName', HttpMethod.POST, { email,name });
         if (response) {
             return `המשתמש עם מזהה ${email} כבר קיים`;
         }
         return true;
     } catch (error) {
+        console.log({error});
+        
         return 'שגיאה בחיבור לשרת ה-usersAccessor';
     }
 };

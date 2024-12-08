@@ -10,7 +10,7 @@ async function connectToDatabase() {
  
     try {
         await mongoClient.connect();
-        console.log('Connected successfully to MongoDB server with user "chava"');
+        console.log('Connected successfully to MongoDB server with user "chana"');
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
         throw err;

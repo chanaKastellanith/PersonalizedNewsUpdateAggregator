@@ -10,8 +10,6 @@ with manage users in mongo db .
 3. * Run the command `docker-compose up` to start the services and their Dapr sidecars.
     * or run each service with the command `npm start`
 
-
-
 ## Technologies Used:
 - Node js: used to develop the microservices.
 - Dapr: An event-driven, portable runtime for building microservices.
@@ -28,7 +26,9 @@ with manage users in mongo db .
 - Manager Service: Accepts requests to get news and call to user manager toget preference of user , and push this  to Rabbit MQ.
 - Accessor Service:listen to queue  get the request ,process the request and connect to API to get news acoording  prefference .
 push the news to anew queue.
-
+ #### AI SERVICES
+- Engine Service:listen to queue  Accepts from NewsManager services  the daily news,send to acssesor with queue ,await to response  push the  summery news to queue.
+- Accessor Service:listen to queue  get the  daily news ,connect to AI API and get summery news push the response to queue.
  #### EMAIL SERVICES
 - Engine Service:listen to queue  Accepts the daily news and desighn itwith HTML and CSS, 
 push the process news to queue.
@@ -37,8 +37,7 @@ push the process news to queue.
 - RabbitMQ: Used as the messaging system for the exchange of requests between the Manager and Accessor services.
 - Dapr: Handles the communication between the Manager and Accessor services and the RabbitMQ queue.
 - MongoDB: The database used to store and retrieve phone entries.
-
-![alt text](image-1.png)
+![alt text](image.png)
 
 ## API Endpoints
 - PUT `http://127.0.0.1:3003/v1.0/invoke/usersEngine/method/updateUser`: Updates user data.

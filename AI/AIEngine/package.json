@@ -1,0 +1,17 @@
+{
+  "name": "aiengine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "dapr run --app-id aiEngine --app-port 3052 --dapr-http-port 3551  node app.js"
+  },
+  "author": "chana kastelanitz",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.5",
+    "express": "^4.21.1",
+    "is-docker": "^3.0.0"
+  }
+}

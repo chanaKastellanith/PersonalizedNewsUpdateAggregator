@@ -1,0 +1,12 @@
+FROM node:16
+
+# יצירת תיקייה לעבודה
+WORKDIR /app
+
+# העתקת קבצי הפרויקט לתוך הקונטיינר
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+# הפעלת השרת
+CMD ["node", "app.js"]

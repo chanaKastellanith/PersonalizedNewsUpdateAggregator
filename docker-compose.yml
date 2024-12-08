@@ -155,6 +155,66 @@ services:
       - news-accessor
     network_mode: "service:news-accessor"
 
+  ########## AI SERVICES ##############
+  ai-engine:
+    build:
+      context: ./AI/AIEngine
+    container_name: ai_engine_container
+    networks:
+      - network-dapr
+    ports:
+      - "3052:3052"
+      - "3551:3551"
+    environment:
+      - DAPR_APP_ID=aiEngine
+      - DAPR_APP_PORT=3551
+    depends_on:
+      - rabbitmq
+
+  ai-accessor:
+    build:
+      context: ./AI/AIAcssesor
+    container_name: ai_accessor_container
+    networks:
+      - network-dapr
+    ports:
+      - "3042:3042"
+      - "3541:3541"
+    environment:
+      - DAPR_APP_ID=aiAcssesor
+      - DAPR_APP_PORT=3541
+    depends_on:
+      - rabbitmq
+
+  ai-engine-dapr:
+    image: "daprio/daprd:edge"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    command: ["./daprd", "-app-id", "aiEngine", "-app-port", "3052", "-dapr-http-port", "3551"]
+    volumes:
+      - "./dapr/:/dapr"
+    depends_on:
+      - ai-engine
+    network_mode: "service:ai-engine" 
+
+  ai-accessor-dapr:
+    image: "daprio/daprd:edge"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    command: ["./daprd", "-app-id", "aiAcssesor", "-app-port", "3042", "-dapr-http-port", "3541"]
+    volumes:
+      - "./dapr/:/dapr"
+    depends_on:
+      - ai-accessor
+    network_mode: "service:ai-accessor"
   # ######## EMAIL SERVICES ##############
   email-engine:
     build:
@@ -215,6 +275,8 @@ services:
     depends_on:
       - email-accessor
     network_mode: "service:email-accessor"
+
+ 
   rabbitmq:
     image: "rabbitmq:management"
     ports:

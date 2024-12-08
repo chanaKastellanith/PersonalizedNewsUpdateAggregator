@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="he">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>שלח בקשות HTTP</title>
     <link rel="stylesheet" href="sendNews.css">
 </head>
+
 <body>
     <div class="container">
         <h1>שלח בקשה לחדשות</h1>
-        
-        <!-- טופס עם תיבות קלט לשם ולמייל -->
         <form id="requestForm">
             <div class="form-group">
                 <label for="name">שם:</label>
@@ -20,36 +20,29 @@
                 <label for="email">מייל:</label>
                 <input type="email" id="email" name="email" placeholder="הכנס מייל" required>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="passwordField" style="display:none;">
                 <label for="password">סיסמה:</label>
-                <input type="text" id="password" name="password" placeholder="הכנס סיסמה" required>
+                <input type="text" id="password" name="password" placeholder="הכנס סיסמה">
             </div>
             <button type="submit">שלח בקשה</button>
         </form>
 
-        <!-- מקום להצגת התגובה -->
         <div id="response" class="response">
             <p></p>
         </div>
     </div>
 
     <script>
-        // אירוע לשליחת הטופס
         document.getElementById('requestForm').addEventListener('submit', (event) => {
-            event.preventDefault(); // מונע שליחה אוטומטית של הטופס
-
+            event.preventDefault();
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
-            // יצירת גוף הבקשה
-            const data = {
-                name: name,
-                email: email,
-                password:password
-            };
-
-            // שליחת הבקשה באמצעות POST
+            const data = { name, email };
+            if (password) {
+                data.password = password;
+            }
+            console.log({ data });
             fetch('http://localhost:3022/newsrequest', {
                 method: 'POST',
                 headers: {
@@ -57,14 +50,27 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('response').innerHTML = `<p> ${JSON.stringify(data.message)}</p>`;
-            })
-            .catch(error => {
-                document.getElementById('response').innerHTML = `<p class="error">שגיאה: ${error}</p>`;
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('response').innerHTML = `<p> ${JSON.stringify(data.message)}</p>`;
+                })
+                .catch(error => {
+
+                    const passwordField = document.getElementById('passwordField');
+                    passwordField.style.display = 'block'; 
+                    const passwordInput = document.getElementById('password');
+                    passwordInput.placeholder = 'הכנס סיסמה '; 
+                    document.getElementById('response').innerHTML = `<p class="error">שגיאה אנא הזן סיסמה חדשה.</p>`;
+                });
         });
     </script>
 </body>
+
 </html>
