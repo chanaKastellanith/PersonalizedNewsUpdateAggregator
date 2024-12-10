@@ -100,7 +100,7 @@ app.post('/newsrequest', async (req, res) => {
            console.log({ user });
         }
         else{
-             user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email, password });
+             user = await daprClient.invoker.invoke(serviceName, 'getUser', HttpMethod.POST, { email,name, password });
            console.log({ user });
         }
         const { category, keywords, country, channel } = user.user;

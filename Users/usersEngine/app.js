@@ -46,7 +46,7 @@ app.post('/authenticateUser', async (req, res) => {
     }
 });
 app.post('/getUser', async (req, res) => {
-    const {  email, name} = req.body;
+    const {  email,name, password} = req.body;
     const newUser = await validateUserExists(email,name);
     if ( newUser) {
         try {
